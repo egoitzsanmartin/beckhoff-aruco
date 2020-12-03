@@ -1,0 +1,1 @@
+﻿opencv_world440.lib(opencv_world440.dll) : fatal error LNK1112: tipo de equipo del módulo 'x64' en conflicto con tipo de equipo de destino 'x86'
