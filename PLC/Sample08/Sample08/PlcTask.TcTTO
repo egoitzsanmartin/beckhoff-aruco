@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Single xml:space="preserve" Type="{11f2245b-f54d-41e7-8df5-0dc5948f8965}" Method="IArchivable">
+  <Single Name="MetaObject" Type="{81297157-7ec9-45ce-845e-84cab2b88ade}" Method="IArchivable">
+    <Single Name="Guid" Type="System.Guid">ef2d96bb-17c9-42ab-9b64-3f3fa7d54846</Single>
+    <Single Name="ParentGuid" Type="System.Guid">221119a5-856e-455e-b1d2-59bd4d39ec6a</Single>
+    <Single Name="Name" Type="string">PlcTask</Single>
+    <Dictionary Type="{2c41fa04-1834-41c1-816e-303c7aa2c05b}" Name="Properties" />
+    <Single Name="TypeGuid" Type="System.Guid">ad3f8c64-9196-466f-9c2f-a48f88f30140</Single>
+    <Array Name="EmbeddedTypeGuids" Type="System.Guid" />
+    <Single Name="Timestamp" Type="long">634611035603255381</Single>
+  </Single>
+  <Single Name="Object" Type="{ad3f8c64-9196-466f-9c2f-a48f88f30140}" Method="IArchivable">
+    <Single Name="CycleTime" Type="uint">100000</Single>
+    <Single Name="Priority" Type="uint">20</Single>
+    <List Name="PouList" Type="{802db863-56c9-4eec-a913-c5d49079955c}">
+      <Single Type="{eab66df8-8b98-4ec4-85de-fef9795ee343}" Method="IArchivable">
+        <Single Name="Name" Type="string">MAIN</Single>
+        <Single Name="Comment" Type="string"></Single>
+      </Single>
+    </List>
+    <Single Name="TaskFBGuid" Type="System.Guid">2780c50f-bcae-4a5c-8376-f4802125c6ef</Single>
+    <Single Name="FBInitGuid" Type="System.Guid">2bfd3afd-9d39-4501-bf96-e4c3f94d0a5b</Single>
+    <Single Name="FBExitGuid" Type="System.Guid">179f4722-3119-4eb0-bd60-edbd18910c29</Single>
+    <Single Name="CycleUpdateGuid" Type="System.Guid">9b687b43-86d2-4d2f-b133-d40eba1eaa46</Single>
+  </Single>
+</Single>

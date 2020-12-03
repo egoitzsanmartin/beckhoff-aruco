@@ -1,0 +1,2 @@
+﻿Sample08.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Sample08.vcxproj -> C:\Users\Administrator\source\repos\Sample08\.\Debug\Sample08.exe

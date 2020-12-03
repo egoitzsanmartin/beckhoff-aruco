@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Single xml:space="preserve" Type="{11f2245b-f54d-41e7-8df5-0dc5948f8965}" Method="IArchivable">
+  <Single Name="MetaObject" Type="{81297157-7ec9-45ce-845e-84cab2b88ade}" Method="IArchivable">
+    <Single Name="Guid" Type="System.Guid">3b6653e1-73f1-482a-b736-7398e193f5f5</Single>
+    <Single Name="ParentGuid" Type="System.Guid">221119a5-856e-455e-b1d2-59bd4d39ec6a</Single>
+    <Single Name="Name" Type="string">Library Manager</Single>
+    <Dictionary Type="{2c41fa04-1834-41c1-816e-303c7aa2c05b}" Name="Properties" />
+    <Single Name="TypeGuid" Type="System.Guid">adb5cb65-8e1d-4a00-b70a-375ea27582f3</Single>
+    <Null Name="EmbeddedTypeGuids" />
+    <Single Name="Timestamp" Type="long">634611035601084947</Single>
+  </Single>
+  <Single Name="Object" Type="{adb5cb65-8e1d-4a00-b70a-375ea27582f3}" Method="IArchivable">
+    <List Name="Items" Type="System.Collections.ArrayList">
+      <Single Type="{51a11660-6c0d-4598-8c08-419c5845ea1f}" Method="IArchivable">
+        <Null Name="Params" />
+        <Single Name="Name" Type="string">Tc2_Standard, 3.2.0.0 (Beckhoff Automation GmbH)</Single>
+        <Single Name="Id" Type="long">126871034</Single>
+        <Single Name="Namespace" Type="string">Tc2_Standard</Single>
+        <Single Name="SystemLibrary" Type="bool">False</Single>
+        <Single Name="HideWhenReferencedAsDependency" Type="bool">False</Single>
+        <Single Name="PublishSymbolsInContainer" Type="bool">False</Single>
+        <Single Name="LinkAllContent" Type="bool">False</Single>
+      </Single>
+      <Single Type="{51a11660-6c0d-4598-8c08-419c5845ea1f}" Method="IArchivable">
+        <Null Name="Params" />
+        <Single Name="Name" Type="string">Tc2_System, 3.2.0.0 (Beckhoff Automation GmbH)</Single>
+        <Single Name="Id" Type="long">1761669192</Single>
+        <Single Name="Namespace" Type="string">Tc2_System</Single>
+        <Single Name="SystemLibrary" Type="bool">False</Single>
+        <Single Name="HideWhenReferencedAsDependency" Type="bool">False</Single>
+        <Single Name="PublishSymbolsInContainer" Type="bool">False</Single>
+        <Single Name="LinkAllContent" Type="bool">False</Single>
+      </Single>
+      <Single Type="{51a11660-6c0d-4598-8c08-419c5845ea1f}" Method="IArchivable">
+        <Null Name="Params" />
+        <Single Name="Name" Type="string">Tc3_Interfaces, 3.2.0.0 (Beckhoff Automation GmbH)</Single>
+        <Single Name="Id" Type="long">451111290</Single>
+        <Single Name="Namespace" Type="string">Tc3_Interfaces</Single>
+        <Single Name="SystemLibrary" Type="bool">False</Single>
+        <Single Name="HideWhenReferencedAsDependency" Type="bool">False</Single>
+        <Single Name="PublishSymbolsInContainer" Type="bool">False</Single>
+        <Single Name="LinkAllContent" Type="bool">False</Single>
+      </Single>
+      <Single Type="{51a11660-6c0d-4598-8c08-419c5845ea1f}" Method="IArchivable">
+        <Null Name="Params" />
+        <Single Name="Name" Type="string">Tc3_Module, 3.2.0.0 (Beckhoff Automation GmbH)</Single>
+        <Single Name="Id" Type="long">1251445358</Single>
+        <Single Name="Namespace" Type="string">Tc3_Module</Single>
+        <Single Name="SystemLibrary" Type="bool">False</Single>
+        <Single Name="HideWhenReferencedAsDependency" Type="bool">False</Single>
+        <Single Name="PublishSymbolsInContainer" Type="bool">False</Single>
+        <Single Name="LinkAllContent" Type="bool">False</Single>
+      </Single>
+    </List>
+    <Dictionary Type="System.Collections.Hashtable" Name="PlaceholderRedirectionTable" />
+  </Single>
+</Single>

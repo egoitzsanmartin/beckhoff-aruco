@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{a18f3a07-53d1-4303-8c28-5ab3ff502e0e}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MyApplication</RootNamespace>
+    <AssemblyName>MyApplication</AssemblyName>
+    <Name>Sample08</Name>
+    <Application>{221119a5-856e-455e-b1d2-59bd4d39ec6a}</Application>
+    <TypeSystem>{b4ff26e3-97ac-4fa1-a76e-b05035f365a3}</TypeSystem>
+    <Implicit_Task_Info>{dff4f2e7-079c-4738-99df-dd8dac94227c}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{791827fd-98fc-494d-88f6-f6426cf950fc}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{4343e807-955a-495b-a5c5-d07176cbd22a}</Implicit_Jitter_Distribution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Library Manager.TcLMO">
+      <SubType>Code</SubType>
+      <ObjectGuid>{3b6653e1-73f1-482a-b736-7398e193f5f5}</ObjectGuid>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+      <ObjectGuid>{ef2d96bb-17c9-42ab-9b64-3f3fa7d54846}</ObjectGuid>
+    </Compile>
+    <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+      <ObjectGuid>{2b55abcf-be51-437d-87f7-f2a567b56d59}</ObjectGuid>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DUTs" />
+    <Folder Include="GVLs" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sample08.tmc">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ProjectExtensions />
+</Project>

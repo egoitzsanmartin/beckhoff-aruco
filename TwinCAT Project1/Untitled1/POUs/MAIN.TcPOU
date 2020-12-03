@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <POU Name="MAIN" Id="{de984950-ce27-47ab-b55e-f3c86f2b17b5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	PLCVar AT %MD0 : DWORD;
+	TP_1		: TP;
+	TOGGEL: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TOGGEL := NOT TOGGEL;
+TP_1( IN := TOGGEL, PT := T#4S);
+IF (TP_1.Q = 0) THEN
+	PLCVar := PLCVar + 1;
+	TOGGEL := NOT TOGGEL;
+	TP_1( IN := TOGGEL, PT := T#4S);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
