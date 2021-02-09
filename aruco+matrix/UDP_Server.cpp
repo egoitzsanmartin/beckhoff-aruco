@@ -1,4 +1,5 @@
 #include "UDP_Server.h"
+
 sockaddr_in init_UDP(SOCKET in) {
 
 	WSADATA data;
@@ -15,7 +16,6 @@ sockaddr_in init_UDP(SOCKET in) {
 	serverHint.sin_addr.S_un.S_addr = ADDR_ANY; 
 	serverHint.sin_family = AF_INET;
 	serverHint.sin_port = htons(27277);
-	
 	if (bind(in, (sockaddr*)&serverHint, sizeof(serverHint)) == SOCKET_ERROR)
 	{
 		std::cout << "Can't bind socket! " << WSAGetLastError() << std::endl;
@@ -57,7 +57,7 @@ void getRobotPose(std::ofstream* allOutfile)
 
 		// Display the message / who sent it
 		std::cout << "Message recv from " << clientIp << " : " << buf << std::endl;
-		//writeRobotPoseInFile(buf, allOutfile);
+		writeRobotPoseInFile(buf, allOutfile);
 
 		closesocket(in);
 }

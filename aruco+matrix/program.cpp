@@ -15,6 +15,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n);
 int waitTime = 1; // 1 milisecond
 bool display = true;  // to activate/deactivate display window
 bool writeInFile = true;  // to activate/deactivate writing parameters in files
+bool noArUco = true;
 float markerSize = 50;
 
 int main() {
@@ -45,7 +46,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 	int nImage = 0;
 	if (n == 0) {
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-		startAdsConnection(&robotFile);
+		//startAdsConnection(&robotFile);
 	}
 	String path = "C:/Users/Administrator/Documents/aruco/poses/arucoPose";
 	path += std::to_string(n);
@@ -95,7 +96,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
                 std::cout << "t: " << tvecs[i] << " s\n";
 
                 if (writeInFile) {
-                    //getRobotPose(&allOutfile);
+                    getRobotPose(&robotFile);
                     writeArucoPoseInFile(rvecs[i], tvecs[i], outputImage, &arucoFile, n, nImage++);
                 }
             }
@@ -106,9 +107,15 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
         }
 
         if (display) {
+			String imgPath = "C:/Users/Administrator/Documents/aruco/img";
+			String imgExtension = ".bmp";
+
 			std::string winname = "Display window ";
 			winname += std::to_string(n);
             namedWindow(winname, WINDOW_NORMAL);
+			if (noArUco) {
+
+			}
             imshow(winname, outputImage);
             char key = (char)cv::waitKey(waitTime);
             if (key == 27)

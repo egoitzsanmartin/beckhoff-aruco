@@ -5,6 +5,5 @@
 #include "TcAdsDef.h"
 #include "TcAdsApi.h"
 
-using namespace std;
 
 void startAdsConnection(std::ofstream* allOutfile);

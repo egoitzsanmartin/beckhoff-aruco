@@ -1,11 +1,8 @@
 #include "WriteFiles.h"
 
-
-
-
 void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstream* allOutfile, int n, int nImage) {
 	String imgPath = "C:/Users/Administrator/Documents/aruco/img";
-	String imgExtension = ".jpg";
+	String imgExtension = ".bmp";
 	imgPath += std::to_string(n);
    /* std::ofstream outfile;
     outfile.open(posePath + std::to_string(nImage) + poseExtension);
@@ -17,7 +14,7 @@ void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstre
     nImage++;
 }
 
-void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile) {
+void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile) {
 	
 	/*static const char* xml = 
 		"<?xml version=\"1.0\"?>"
@@ -31,8 +28,8 @@ void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile) {
 			"<IPOC>361233514</IPOC>"
 		"</Rob>";*/
 
-	/*std::string result = buf;
-	XMLDocument doc;
+	std::string result = buf;
+	tinyxml2::XMLDocument doc;
 	doc.Parse(buf);
 
 	const char* X = doc.FirstChildElement("Rob")->FirstChildElement("X")->GetText();
@@ -60,7 +57,7 @@ void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile) {
 	result.append(B);
 	result.append(";");
 	result.append(C);
-	result.append(";");*/
+	result.append(";");
 
 	*allOutfile << buf << std::endl;
 

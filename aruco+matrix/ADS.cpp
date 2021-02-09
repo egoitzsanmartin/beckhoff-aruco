@@ -20,7 +20,7 @@ void startAdsConnection(std::ofstream* allOutfile)
 	// open communication port on the ADS router
 	nPort = AdsPortOpen();
 	nErr = AdsGetLocalAddress(pAddr);
-	if (nErr) cerr << "Error: AdsGetLocalAddress: " << nErr << '\n';
+	if (nErr) std::cerr << "Error: AdsGetLocalAddress: " << nErr << '\n';
 	pAddr->port = 851;
 
 	// set the attributes of the notification
@@ -31,14 +31,14 @@ void startAdsConnection(std::ofstream* allOutfile)
 
 	// get handle
 	nErr = AdsSyncReadWriteReq(pAddr, ADSIGRP_SYM_HNDBYNAME, 0x0, sizeof(hUser), &hUser, sizeof(szVar), szVar);
-	if (nErr) cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
+	if (nErr) std::cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
 
 	// initiate the transmission of the PLC-variable 
 	nErr = AdsSyncAddDeviceNotificationReq(pAddr, ADSIGRP_SYM_VALBYHND, hUser, &adsNotificationAttrib, Callback, hUser, &hNotification);
 
-	if (nErr) cerr << "Error: AdsSyncAddDeviceNotificationReq: " << nErr << '\n';
-	cout << "Notification: " << hNotification << "\n\n";
-	cout.flush();
+	if (nErr) std::cerr << "Error: AdsSyncAddDeviceNotificationReq: " << nErr << '\n';
+	std::cout << "Notification: " << hNotification << "\n\n";
+	std::cout.flush();
 
 	/*
 	// finish the transmission of the PLC-variable 
@@ -67,9 +67,9 @@ void __stdcall Callback(AmsAddr* pAddr, AdsNotificationHeader* pNotification, UL
 	//cout << ++nCount << ". Call:\n";
 
 	// print (to screen)) the value of the variable 
-	cout << "Value: " << *(ULONG *)pNotification->data << '\n';
+	std::cout << "Value: " << *(ULONG *)pNotification->data << '\n';
 	ULONG buf = *(ULONG *)pNotification->data;
-	writeRobotPoseInFile(buf, file);
+	//writeRobotPoseInFile(buf, file);
 	//cout << "Notification: " << pNotification->hNotification << '\n';
 
 	// Convert the timestamp into SYSTEMTIME

@@ -29,7 +29,7 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
     }
 
     mvIMPACT::acquire::GenICam::AcquisitionControl ac(pDev);
-    ac.triggerMode.writeS("Off");
+    ac.triggerMode.writeS("On");
 
     return pDev;
 }
