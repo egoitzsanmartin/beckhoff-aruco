@@ -4,16 +4,17 @@
   dictionary.cpp
   zmaxheap.cpp
   ADS.cpp
-c:\users\administrator\source\repos\aruco-mv\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
+c:\users\administrator\source\repos\sample08\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
   CamCalib.cpp
   MatrixVisionDevice.cpp
   Automatically linking with mvDeviceManager.lib
   Parameters.cpp
   program.cpp
   Automatically linking with mvDeviceManager.lib
-c:\users\administrator\source\repos\aruco-mv\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
+c:\users\administrator\source\repos\sample08\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
   tinyxml2.cpp
   UDP_Server.cpp
+c:\users\administrator\source\repos\sample08\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
   WriteFiles.cpp
-c:\users\administrator\source\repos\aruco-mv\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
+c:\users\administrator\source\repos\sample08\aruco+matrix\ads.h(5): fatal error C1083: Cannot open include file: 'TcAdsDef.h': No such file or directory
   Generating Code...

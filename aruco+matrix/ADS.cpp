@@ -3,7 +3,21 @@
 
 std::ofstream* file;
 
+const int LIMIT = 30;
+
 void _stdcall Callback(AmsAddr*, AdsNotificationHeader*, unsigned long);
+long fifoWrite(long val);
+long fifoRead();
+void writeValuesInPlc(long hWrite, AmsAddr* pAddr);
+
+char szVar[] = { "MAIN.ROBOTVar" };
+char szVarPc[] = { "MAIN.PCVar" };
+long hUser, hWrite;
+
+long buffer[LIMIT];
+int tail = -1;
+int head = 0;
+int count = 0;
 
 void startAdsConnection(std::ofstream* allOutfile)
 {
@@ -11,10 +25,9 @@ void startAdsConnection(std::ofstream* allOutfile)
 	long                   nErr, nPort;
 	AmsAddr                Addr;
 	PAmsAddr               pAddr = &Addr;
-	ULONG                  hNotification, hUser;
+	ULONG                  hNotification;
 	AdsNotificationAttrib  adsNotificationAttrib;
-	char					 szVar[] = { "MAIN.PLCVar" };
-
+	
 	file = allOutfile;
 
 	// open communication port on the ADS router
@@ -27,75 +40,71 @@ void startAdsConnection(std::ofstream* allOutfile)
 	adsNotificationAttrib.cbLength = 4;
 	adsNotificationAttrib.nTransMode = ADSTRANS_SERVERONCHA;
 	adsNotificationAttrib.nMaxDelay = 0;
-	adsNotificationAttrib.nCycleTime = 10000000; // 1sec 
+	adsNotificationAttrib.nCycleTime = 10; // 1sec 
 
-	// get handle
 	nErr = AdsSyncReadWriteReq(pAddr, ADSIGRP_SYM_HNDBYNAME, 0x0, sizeof(hUser), &hUser, sizeof(szVar), szVar);
 	if (nErr) std::cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
 
+	nErr = AdsSyncReadWriteReq(pAddr, ADSIGRP_SYM_HNDBYNAME, 0x0, sizeof(hWrite), &hWrite, sizeof(szVarPc), szVarPc);
+	if (nErr) std::cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
+
+	long nData = 0;
+	nErr = AdsSyncWriteReq(pAddr, ADSIGRP_SYM_VALBYHND, hUser, sizeof(nData), &nData);
+	if (nErr) std::cerr << "Error: AdsSyncWriteReq: " << nErr << '\n';
+
 	// initiate the transmission of the PLC-variable 
 	nErr = AdsSyncAddDeviceNotificationReq(pAddr, ADSIGRP_SYM_VALBYHND, hUser, &adsNotificationAttrib, Callback, hUser, &hNotification);
-
 	if (nErr) std::cerr << "Error: AdsSyncAddDeviceNotificationReq: " << nErr << '\n';
+
 	std::cout << "Notification: " << hNotification << "\n\n";
 	std::cout.flush();
-
-	/*
-	// finish the transmission of the PLC-variable 
-	nErr = AdsSyncDelDeviceNotificationReq(pAddr, hNotification);
-	if (nErr) cerr << "Error: AdsSyncDelDeviceNotificationReq: " << nErr << '\n';
-
-	// release handle
-	nErr = AdsSyncWriteReq(pAddr, ADSIGRP_SYM_RELEASEHND, 0, sizeof(hUser), &hUser);
-	if (nErr) cerr << "Error: AdsSyncWriteReq: " << nErr << '\n';
-
-	// Close the communication port
-	nErr = AdsPortClose();
-	if (nErr) cerr << "Error: AdsPortClose: " << nErr << '\n';*/
+	writeValuesInPlc(hWrite, pAddr);
+	
 }
 
 // Callback-function
-void __stdcall Callback(AmsAddr* pAddr, AdsNotificationHeader* pNotification, ULONG hUser)
+void __stdcall Callback(AmsAddr* pAddr, AdsNotificationHeader* pNotification, ULONG hA)
 {
-	int                     nIndex;
-	static ULONG            nCount = 0;
-	SYSTEMTIME              SystemTime, LocalTime;
-	FILETIME                FileTime;
-	LARGE_INTEGER           LargeInteger;
-	TIME_ZONE_INFORMATION   TimeZoneInformation;
-
-	//cout << ++nCount << ". Call:\n";
-
 	// print (to screen)) the value of the variable 
-	std::cout << "Value: " << *(ULONG *)pNotification->data << '\n';
-	ULONG buf = *(ULONG *)pNotification->data;
+	long buf = *(long *)pNotification->data;
+
+	fifoWrite(buf);
+
 	//writeRobotPoseInFile(buf, file);
 	//cout << "Notification: " << pNotification->hNotification << '\n';
 
-	// Convert the timestamp into SYSTEMTIME
-	LargeInteger.QuadPart = pNotification->nTimeStamp;
-	FileTime.dwLowDateTime = (DWORD)LargeInteger.LowPart;
-	FileTime.dwHighDateTime = (DWORD)LargeInteger.HighPart;
-	FileTimeToSystemTime(&FileTime, &SystemTime);
+}
 
-	// Convert the time value Zeit to local time
-	GetTimeZoneInformation(&TimeZoneInformation);
-	SystemTimeToTzSpecificLocalTime(&TimeZoneInformation, &SystemTime, &LocalTime);
+void writeValuesInPlc(long hWrite, AmsAddr* pAddr) {
+	long nErr;
 
-	// print out the timestamp
-	//cout << LocalTime.wHour << ":" << LocalTime.wMinute << ":" << LocalTime.wSecond << '.' << LocalTime.wMilliseconds <<
-	//	" den: " << LocalTime.wDay << '.' << LocalTime.wMonth << '.' << LocalTime.wYear << '\n';
+	while (true) {
+		if (count > 0) {
+			long value = fifoRead();
 
-	// Größe des Buffers in Byte
-	//cout << "SampleSize: " << pNotification->cbSampleSize << '\n';
+			nErr = AdsSyncWriteReq(pAddr, ADSIGRP_SYM_VALBYHND, hWrite, sizeof(value), &value);
+			if (nErr) std::cerr << "Error: AdsSyncWriteReq: " << nErr << '\n';
+		}
+	}
+	
+}
 
-	// 32-Bit Variable (auch Zeiger), die beim AddNotification gesetzt wurde // (siehe main)
-	//cout << "hUser: " << hUser << '\n';
+long fifoRead() {
+	if (count == 0) return -1;
+	count--;
+	tail = (tail + 1) % LIMIT;
+	std::cout << "PC: " << buffer[tail] << '\n';
+	return buffer[tail];
+}
 
-	// Print out the ADS-address of the sender
-	//cout << "ServerNetId: ";
-	//for (nIndex = 0; nIndex < 6; nIndex++)
-	//	cout << (int)pAddr->netId.b[nIndex] << ".";
-	//cout << "\nPort: " << pAddr->port << "\n\n";
-	//cout.flush();
+long fifoWrite(long val) {
+	if (count >= LIMIT) {
+		std::cout << "FULL" << '\n';
+		return -1;
+	}
+	buffer[head] = val;
+	count++;
+	head = (head + 1) % LIMIT;
+	std::cout << "ROBOT: " << val << '\n';
+	return buffer[head];
 }

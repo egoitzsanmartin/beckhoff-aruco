@@ -4,8 +4,6 @@
 #include "Parameters.h"
 #include "WriteFiles.h"
 #include "ADS.h"
-#include <thread>
-#include <list>
 
 using namespace cv;
 using namespace std;
@@ -43,16 +41,23 @@ int main() {
 void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 	ofstream robotFile;
 	ofstream arucoFile;
+	std::thread adsThread;
+
 	int nImage = 0;
 	if (n == 0) {
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-		//startAdsConnection(&robotFile);
+		adsThread = std::thread(startAdsConnection, &robotFile);
 	}
 	String path = "C:/Users/Administrator/Documents/aruco/poses/arucoPose";
 	path += std::to_string(n);
 	path += ".txt";
 	arucoFile.open(path);
     helper::RequestProvider requestProvider(pDev);
+	std::vector<int> markerIds;
+
+	std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
+	cv::Ptr<cv::aruco::DetectorParameters> parameters = cv::aruco::DetectorParameters::create();
+	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
     requestProvider.acquisitionStart();
 
     while (true) {
@@ -62,12 +67,6 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
         outputImage = getImage(pRequest);
 
         camCalib(&cameraMatrix, &distCoeffs);
-
-        std::vector<int> markerIds;
-	
-        std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
-        cv::Ptr<cv::aruco::DetectorParameters> parameters = cv::aruco::DetectorParameters::create();
-        cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
         
         bool e = readDetectorParameters("detector_params.yml", parameters);
 
@@ -114,7 +113,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 			winname += std::to_string(n);
             namedWindow(winname, WINDOW_NORMAL);
 			if (noArUco) {
-
+				imwrite((imgPath + std::to_string(n) + "/img" + std::to_string(nImage++) + imgExtension), outputImage);
 			}
             imshow(winname, outputImage);
             char key = (char)cv::waitKey(waitTime);
@@ -122,7 +121,10 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
                 break;
         }
     }
-	arucoFile.close();
+	//arucoFile.close();
+	if (n == 0) {
+		adsThread.join();
+	}
 	robotFile.close();
     requestProvider.acquisitionStop();
 }
