@@ -30,29 +30,32 @@ void startAdsConnection(std::ofstream* allOutfile)
 	
 	file = allOutfile;
 
-	// open communication port on the ADS router
+	// Abrir comunicación de puertos con el PLC.
 	nPort = AdsPortOpen();
 	nErr = AdsGetLocalAddress(pAddr);
 	if (nErr) std::cerr << "Error: AdsGetLocalAddress: " << nErr << '\n';
 	pAddr->port = 851;
 
-	// set the attributes of the notification
+	// Atributos para la notificación.
 	adsNotificationAttrib.cbLength = 4;
-	adsNotificationAttrib.nTransMode = ADSTRANS_SERVERONCHA;
+	adsNotificationAttrib.nTransMode = ADSTRANS_SERVERONCHA;  // Llama a "Callback" solo cuando haya un cambio en la variable.
 	adsNotificationAttrib.nMaxDelay = 0;
-	adsNotificationAttrib.nCycleTime = 10; // 1sec 
+	adsNotificationAttrib.nCycleTime = 10; // 1sec ---- Tiempo de refresco para comprobar el PLC.
 
+	// Adquiere el offset de la variable a leer.
 	nErr = AdsSyncReadWriteReq(pAddr, ADSIGRP_SYM_HNDBYNAME, 0x0, sizeof(hUser), &hUser, sizeof(szVar), szVar);
 	if (nErr) std::cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
 
+	// Adquiere el offset de la variable a escribir.
 	nErr = AdsSyncReadWriteReq(pAddr, ADSIGRP_SYM_HNDBYNAME, 0x0, sizeof(hWrite), &hWrite, sizeof(szVarPc), szVarPc);
 	if (nErr) std::cerr << "Error: AdsSyncReadWriteReq: " << nErr << '\n';
 
+	// Inicializa la variable de lectura a 0.
 	long nData = 0;
 	nErr = AdsSyncWriteReq(pAddr, ADSIGRP_SYM_VALBYHND, hUser, sizeof(nData), &nData);
 	if (nErr) std::cerr << "Error: AdsSyncWriteReq: " << nErr << '\n';
 
-	// initiate the transmission of the PLC-variable 
+	// Inicia la transmisión con la variable del PLC.
 	nErr = AdsSyncAddDeviceNotificationReq(pAddr, ADSIGRP_SYM_VALBYHND, hUser, &adsNotificationAttrib, Callback, hUser, &hNotification);
 	if (nErr) std::cerr << "Error: AdsSyncAddDeviceNotificationReq: " << nErr << '\n';
 
@@ -65,16 +68,18 @@ void startAdsConnection(std::ofstream* allOutfile)
 // Callback-function
 void __stdcall Callback(AmsAddr* pAddr, AdsNotificationHeader* pNotification, ULONG hA)
 {
-	// print (to screen)) the value of the variable 
+	// Guarda la variable cambiada en el PLC.
 	long buf = *(long *)pNotification->data;
 
 	fifoWrite(buf);
 
 	//writeRobotPoseInFile(buf, file);
-	//cout << "Notification: " << pNotification->hNotification << '\n';
 
 }
 
+// Esta función se ejecuta en bucle por un hilo, y se encarga
+// de ver si hay algún elemento en el buffer. Si lo hay, abre
+// una conexión por ADS con el PLC para excribir esa variable.
 void writeValuesInPlc(long hWrite, AmsAddr* pAddr) {
 	long nErr;
 
@@ -89,6 +94,7 @@ void writeValuesInPlc(long hWrite, AmsAddr* pAddr) {
 	
 }
 
+// Coger primer elemento del buffer.
 long fifoRead() {
 	if (count == 0) return -1;
 	count--;
@@ -97,6 +103,7 @@ long fifoRead() {
 	return buffer[tail];
 }
 
+// Escribir último elemento de buffer.
 long fifoWrite(long val) {
 	if (count >= LIMIT) {
 		std::cout << "FULL" << '\n';

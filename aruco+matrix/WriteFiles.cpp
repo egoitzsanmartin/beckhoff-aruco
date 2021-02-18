@@ -1,5 +1,6 @@
 #include "WriteFiles.h"
 
+
 void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstream* allOutfile, int n, int nImage) {
 	String imgPath = "C:/Users/Administrator/Documents/aruco/img";
 	String imgExtension = ".bmp";
@@ -15,18 +16,6 @@ void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstre
 }
 
 void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile) {
-	
-	/*static const char* xml = 
-		"<?xml version=\"1.0\"?>"
-		"<Rob Type=\"KUKA\">"
-			"<X>615.0</X>"
-			"<Y>140.0</Y>"
-			"<Z>420.0</Z>"
-			"<A>-180.0</A>"
-			"<B>0.0</B>"
-			"<C>-90.0</C>"
-			"<IPOC>361233514</IPOC>"
-		"</Rob>";*/
 
 	std::string result = buf;
 	tinyxml2::XMLDocument doc;

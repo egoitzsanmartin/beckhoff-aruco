@@ -1,5 +1,10 @@
 #include "UDP_Server.h"
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// ! NO SE UTILIZA UDP. EL SISTEMA DE TRANSMISION SE HACE !
+// ! MEDIANTE ADS EN EL FICHERO "ADS.C".				  !
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 sockaddr_in init_UDP(SOCKET in) {
 
 	WSADATA data;
