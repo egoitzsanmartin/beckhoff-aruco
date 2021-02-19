@@ -1,5 +1,7 @@
 #include "MatrixVisionDevice.h"
 
+using namespace cv; // IMPORTANTE: no definir namespace en el .h, da un error de "'ACCESS_MASK' : ambiguous symbol" 
+
 //-----------------------------------------------------------------------------
 mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
 
@@ -27,7 +29,7 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
     mvIMPACT::acquire::GenICam::AcquisitionControl ac(pDev);
 
 	// "On" para activar el sistema de trigger. "Off" para captura continua.
-    ac.triggerMode.writeS("On");
+    ac.triggerMode.writeS("Off");
 
     return pDev;
 }

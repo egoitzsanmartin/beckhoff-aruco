@@ -7,6 +7,22 @@ VAR
 	PCVar AT %MD1 : DWORD;
 	TP_1		: TP;
 	TOGGEL: BOOL;
+	Var1 AT %I*: BOOL;
+	Var2 AT %I*: BOOL;
+	Var3 AT %I*: BOOL;
+	Var4 AT %I*: BOOL;
+	Var5 AT %I*: BOOL;
+	Var6 AT %I*: BOOL;
+	Var7 AT %I*: BOOL;
+	Var8 AT %I*: BOOL;
+	Var9 AT %Q*: BOOL;
+	Var10 AT %Q*: BOOL;
+	Var11 AT %Q*: BOOL;
+	Var12 AT %Q*: BOOL;
+	Var13 AT %Q*: BOOL;
+	Var14 AT %Q*: BOOL;
+	Var15 AT %Q*: BOOL;
+	Var16 AT %Q*: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>

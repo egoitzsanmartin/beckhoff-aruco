@@ -16,4 +16,3 @@ bool isDeviceSupportedBySample(const Device* const pDev);
 
 using namespace mvIMPACT::acquire;
 using namespace std;
-using namespace cv;
