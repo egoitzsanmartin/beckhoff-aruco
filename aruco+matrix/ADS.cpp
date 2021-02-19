@@ -5,20 +5,6 @@ std::ofstream* file;
 
 const int LIMIT = 30;
 
-void _stdcall Callback(AmsAddr*, AdsNotificationHeader*, unsigned long);
-long fifoWrite(long val);
-long fifoRead();
-void writeValuesInPlc(long hWrite, AmsAddr* pAddr);
-
-char szVar[] = { "MAIN.ROBOTVar" };
-char szVarPc[] = { "MAIN.PCVar" };
-long hUser, hWrite;
-
-long buffer[LIMIT];
-int tail = -1;
-int head = 0;
-int count = 0;
-
 void startAdsConnection(std::ofstream* allOutfile)
 {
 

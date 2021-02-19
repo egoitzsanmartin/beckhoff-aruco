@@ -13,3 +13,7 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev);
 cv::Mat getImage(std::shared_ptr<Request> pRequest);
 int getDataType(TImageBufferPixelFormat format);
 bool isDeviceSupportedBySample(const Device* const pDev);
+
+using namespace mvIMPACT::acquire;
+using namespace std;
+using namespace cv;

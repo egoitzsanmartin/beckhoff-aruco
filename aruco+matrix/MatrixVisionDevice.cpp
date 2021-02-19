@@ -1,9 +1,5 @@
 #include "MatrixVisionDevice.h"
 
-using namespace mvIMPACT::acquire;
-using namespace std;
-using namespace cv;
-
 //-----------------------------------------------------------------------------
 mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
 
