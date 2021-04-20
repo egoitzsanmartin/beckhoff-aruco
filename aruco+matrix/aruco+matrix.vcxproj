@@ -19,28 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\apriltag_quad_thresh.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\aruco.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\charuco.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\dictionary.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\zmaxheap.cpp" />
-    <ClCompile Include="ADS.cpp" />
-    <ClCompile Include="CamCalib.cpp" />
     <ClCompile Include="MatrixVisionDevice.cpp" />
-    <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="program.cpp" />
-    <ClCompile Include="tinyxml2.cpp" />
-    <ClCompile Include="UDP_Server.cpp" />
-    <ClCompile Include="WriteFiles.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ADS.h" />
-    <ClInclude Include="CamCalib.h" />
     <ClInclude Include="MatrixVisionDevice.h" />
-    <ClInclude Include="Parameters.h" />
-    <ClInclude Include="tinyxml2.h" />
-    <ClInclude Include="UDP_Server.h" />
-    <ClInclude Include="WriteFiles.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -170,7 +153,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\opencv\build\x64\vc15\lib;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\lib\win\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;C:\TwinCAT\AdsApi\TcAdsDll\x64\lib\TcAdsDll.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PreventDllBinding>
       </PreventDllBinding>
     </Link>

@@ -1,8 +1,8 @@
-﻿  MatrixVisionDevice.cpp
+﻿  program.cpp
   Automatically linking with mvDeviceManager.lib
-  Generating code
-  1 of 3968 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  Generando código
+  124 of 1675 functions ( 7.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  aruco+matrix.vcxproj -> C:\Users\Administrator\source\repos\Sample08\x64\Release\aruco+matrix.exe
+    18 functions had inline decision re-evaluated but remain unchanged
+  Generación de código finalizada
+  aruco+matrix.vcxproj -> D:\robotica\proyectos\beckhoff-aruco\x64\Release\aruco+matrix.exe
