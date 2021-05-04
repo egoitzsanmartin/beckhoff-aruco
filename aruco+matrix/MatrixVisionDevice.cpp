@@ -13,7 +13,8 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
     try
     {
         cout << "Initialising the device. This might take some time..." << endl << endl;
-        pDev->interfaceLayout.write(dilGenICam); // This is also done 'silently' by the 'getDeviceFromUserInput' function but your application needs to do this as well so state this here clearly!
+		conditionalSetProperty(pDev->interfaceLayout, dilGenICam); // This is also done 'silently' by the 'getDeviceFromUserInput' function but your application needs to do this as well so state this here clearly!
+		conditionalSetProperty(pDev->acquisitionStartStopBehaviour, assbUser);
         pDev->open();
         cout << "Device open" << endl << endl;
     }
@@ -27,15 +28,17 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
     }
 
     mvIMPACT::acquire::GenICam::AcquisitionControl ac(pDev);
-
+	mvIMPACT::acquire::GenICam::AnalogControl anc(pDev);
 	// "On" para activar el sistema de trigger. "Off" para captura continua.
-    ac.triggerMode.writeS("Off");
+    ac.triggerMode.writeS("On");
+	ac.exposureTime.write(10000);
+	anc.gain.write(0);
 
     return pDev;
 }
 
 
-cv::Mat getImage(std::shared_ptr<Request> pRequest) {
+cv::Mat getImage(Request* pRequest) {
     cv::Mat image;
     int dataType = getDataType(pRequest->imagePixelFormat.read());
     image = Mat(cv::Size(pRequest->imageWidth.read(), pRequest->imageHeight.read()), dataType, pRequest->imageData.read(), pRequest->imageLinePitch.read());

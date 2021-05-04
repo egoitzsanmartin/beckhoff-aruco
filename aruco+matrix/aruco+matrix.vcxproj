@@ -144,13 +144,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\TwinCAT\AdsApi\TcAdsDll\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\opencv\build\x64\vc15\lib;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\lib\win\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\TwinCAT\AdsApi\TcAdsDll\x64\lib\TcAdsDll.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

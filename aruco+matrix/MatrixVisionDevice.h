@@ -10,7 +10,7 @@
 #include <chrono>
 
 mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev);
-cv::Mat getImage(std::shared_ptr<Request> pRequest);
+cv::Mat getImage(Request* pRequest);
 int getDataType(TImageBufferPixelFormat format);
 bool isDeviceSupportedBySample(const Device* const pDev);
 
