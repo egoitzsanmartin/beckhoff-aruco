@@ -10,7 +10,6 @@ using namespace cv;
 using namespace std;
 
 //void runProgram(shared_ptr<ThreadParameter> parameter, int n);
-void writeToStdout(const string& msg);
 void displayCommandLineOptions(void);
 
 static bool s_boTerminated = false;
@@ -18,7 +17,7 @@ static bool s_boTerminated = false;
 int waitTime = 1;													// 1 milisegundo.
 bool displayImage = true;											// Para activar o desactivar la reproducción de las imágenes.
 bool writeInFile = false;			 								// Para activar o desactivar la función de esctibir las poses en ficheros.
-bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
+bool saveImage = false;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
 String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
@@ -138,6 +137,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 
 						//std::cout << "r(euler): " << Degree_euler << " s\n";
 						//std::cout << "r: " << m33.row(i) << " s\n";
+						lock_guard<mutex> lockedScope(s_mutex);
 						std::cout << "t: " << tvecs[i] << " s\n";
 
 						// Guarda las posiciones del robot y del marcador.
