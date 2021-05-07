@@ -36,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="ADS.h" />
     <ClInclude Include="CamCalib.h" />
+    <ClInclude Include="exampleHelper.h" />
     <ClInclude Include="MatrixVisionDevice.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="tinyxml2.h" />

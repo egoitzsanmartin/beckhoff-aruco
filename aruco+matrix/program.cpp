@@ -4,59 +4,59 @@
 #include "Parameters.h"
 #include "WriteFiles.h"
 #include "ADS.h"
+#include "exampleHelper.h"
 
 using namespace cv;
 using namespace std;
 
-void runProgram(mvIMPACT::acquire::Device* pDev, int n);
+//void runProgram(shared_ptr<ThreadParameter> parameter, int n);
+void writeToStdout(const string& msg);
+void displayCommandLineOptions(void);
+
+static bool s_boTerminated = false;
 
 int waitTime = 1;													// 1 milisegundo.
-bool display = true;												// Para activar o desactivar la reproducción de las imágenes.
-bool writeInFile = false;											// Para activar o desactivar la función de esctibir las poses en ficheros.
-bool saveImage = false;												// Para activar o desactivar el guardado de imagen en disco.
+bool displayImage = true;											// Para activar o desactivar la reproducción de las imágenes.
+bool writeInFile = false;			 								// Para activar o desactivar la función de esctibir las poses en ficheros.
+bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
 String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
 String imgExtension = ".bmp";										// Formato de imagen
 
-int main() {
-	mvIMPACT::acquire::DeviceManager devMgr;
-
-	// Cuenta la cantidad de dispositivos (cámaras) disponibles.
-	if (devMgr.deviceCount() == 0)    
+class ThreadParameter
+	//-----------------------------------------------------------------------------
+{
+	Device*             pDev_;
+	int					index_;
+public:
+	explicit ThreadParameter(Device* pDev, int index) : pDev_(pDev), index_(index) {}
+	ThreadParameter(const ThreadParameter& src) = delete;
+	Device* device(void) const
 	{
-		cout << "No device found! Unable to continue!" << endl;
-		cin.get();
+		return pDev_;
 	}
-	vector<mvIMPACT::acquire::Device*> pDevs;
-	int size;
-	std::list<std::thread> threads = {};
-
-	size = getValidDevices(devMgr, pDevs);
-
-	// Por cada cámara se inicia un dispositivo y se inicia un hilo con la función "runProgram" para cámara.
-	for (int i = 0; i < size; i++) {
-		threads.emplace_back(std::thread(runProgram, pDevs.at(i), i));
+	int index(void) const
+	{
+		return index_;
 	}
+};
 
-	// Espera a que todos los hilos de los dispositivos terminen.
-	for (auto& t : threads) {
-		t.join();				 
-	}
-}
 
-void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
+void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
+	Device* pDev = parameter->device();
 	ofstream robotFile;
 	ofstream arucoFile;
 	std::thread adsThread;
+
 	initializeDevice(pDev);
 
 	int nImage = 0;
 
 	// Si es el primer hilo, abre un fichero para la pose del robot y comienza un hilo para gestionar la conexión de ADS.
-	if (n == 0) {																	  
+	if (n == 0) {
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-	//	adsThread = std::thread(startAdsConnection, &robotFile);
+		//	adsThread = std::thread(startAdsConnection, &robotFile);
 	}
 
 	// Abre un archivo para las poses de los marcadores.
@@ -65,39 +65,44 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 	path += ".txt";
 	arucoFile.open(path);
 
-	FunctionInterface requestProvider(pDev);
-	const unsigned int timeout_ms = { 500 };
-	int requestNr = INVALID_ID;
-	int lastRequestNr = { INVALID_ID };
-	Request* pRequest = nullptr;
+	Statistics statistics(pDev);
+	FunctionInterface fi(pDev);
 
 	TDMR_ERROR result = DMR_NO_ERROR;
-	while ((result = static_cast<TDMR_ERROR>(requestProvider.imageRequestSingle())) == DMR_NO_ERROR) {};
+	while ((result = static_cast<TDMR_ERROR>(fi.imageRequestSingle())) == DMR_NO_ERROR) {};
 	if (result != DEV_NO_FREE_REQUEST_AVAILABLE)
 	{
+		lock_guard<mutex> lockedScope(s_mutex);
 		cout << "'FunctionInterface.imageRequestSingle' returned with an unexpected result: " << result
 			<< "(" << ImpactAcquireException::getErrorCodeAsString(result) << ")" << endl;
 	}
 
+	manuallyStartAcquisitionIfNeeded(pDev, fi);
+
+	const Request* pRequest = nullptr;
+	const unsigned int timeout_ms = { 500 };
+	int requestNr = INVALID_ID;
+	// we always have to keep at least 2 images as the display module might want to repaint the image, thus we
+	// can't free it unless we have a assigned the display to a new buffer.
+	int lastRequestNr = { INVALID_ID };
+	unsigned int cnt = { 0 };
 	// Se definen los parametros necesarios para la detección de ArUcos.
 	std::vector<int> markerIds;
 
 	std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
 	cv::Ptr<cv::aruco::DetectorParameters> parameters = cv::aruco::DetectorParameters::create();
 	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
-	requestProvider.acquisitionStart();
 
 	cv::Mat outputImage, rgbOutputImage, cameraMatrix, distCoeffs;
-    while (true) {
+	while (!s_boTerminated) {
 		// Comienza a contar el tiempo.
-        auto start = std::chrono::high_resolution_clock::now();
+		auto start = std::chrono::high_resolution_clock::now();
 
 		// El programa queda en espera a que llegue una señal de trigger.
-		requestNr = requestProvider.imageRequestWaitFor(timeout_ms);
-		if (requestProvider.isRequestNrValid(requestNr))
+		requestNr = fi.imageRequestWaitFor(timeout_ms);
+		if (fi.isRequestNrValid(requestNr))
 		{
-			pRequest = requestProvider.getRequest(requestNr);
-			cout << pRequest->isOK() << endl;
+			pRequest = fi.getRequest(requestNr);
 			if (pRequest->isOK()) {
 				outputImage = getImage(pRequest);
 
@@ -111,7 +116,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 				cv::cvtColor(outputImage, rgbOutputImage, cv::COLOR_GRAY2RGB);
 				if (markerIds.size() > 0 && !noArUco) {
 
-					if (display) {
+					if (displayImage) {
 						cv::aruco::drawDetectedMarkers(rgbOutputImage, markerCorners, markerIds);
 					}
 
@@ -127,7 +132,7 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 					for (int i = 0; i < markerIds.size(); i++) {
 						// Dibuja los ejes del marcador en la imagen.
 
-						if (display) {
+						if (displayImage) {
 							cv::aruco::drawAxis(rgbOutputImage, cameraMatrix, distCoeffs, rvecs[i], tvecs[i], 25);
 						}
 
@@ -149,8 +154,20 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 					std::cout << "Capture: " << elapsed.count() << " s\n";
 				}
 
+				++cnt;
+				// here we can display some statistical information every 100th image
+				if (cnt % 100 == 0)
+				{
+					lock_guard<mutex> lockedScope(s_mutex);
+					cout << "Info from " << pDev->serial.read()
+						<< ": " << statistics.framesPerSecond.name() << ": " << statistics.framesPerSecond.readS()
+						<< ": " << statistics.bandwidthConsumed.name() << ": " << statistics.bandwidthConsumed.readS()
+						<< ", " << statistics.errorCount.name() << ": " << statistics.errorCount.readS()
+						<< ", " << statistics.captureTime_s.name() << ": " << statistics.captureTime_s.readS() << endl;
+				}
+
 				// Pone la imagen en pantalla.
-				if (display) {
+				if (displayImage) {
 
 					std::string winname = "Display window ";
 					winname += std::to_string(n);
@@ -170,25 +187,94 @@ void runProgram(mvIMPACT::acquire::Device* pDev, int n) {
 						break;
 				}
 			}
-			if (requestProvider.isRequestNrValid(lastRequestNr))
+			else
+			{
+				writeToStdout("Error: " + pRequest->requestResult.readS());
+			}
+			if (fi.isRequestNrValid(lastRequestNr))
 			{
 				// this image has been displayed thus the buffer is no longer needed...
-				requestProvider.imageRequestUnlock(lastRequestNr);
+				fi.imageRequestUnlock(lastRequestNr);
 			}
 			lastRequestNr = requestNr;
 			// send a new image request into the capture queue
-			requestProvider.imageRequestSingle();
+			fi.imageRequestSingle();
 		}
-    }
+
+	}
 	//arucoFile.close();
 
 	// Espera al hilo de ADS.
-	if (n == 0) {
+	if (n == 0) 
+	{
 		adsThread.join();
 	}
 
 	// Cierra el archivo de texto
-	robotFile.close(); 
-    requestProvider.acquisitionStop();
+	robotFile.close();
+	manuallyStopAcquisitionIfNeeded(pDev, fi);
+
+	if (fi.isRequestNrValid(requestNr))
+	{
+		fi.imageRequestUnlock(requestNr);
+	}
+	// clear all queues
+	fi.imageRequestReset(0, 0);
+}
+
+
+
+int main(int argc, char* argv[]) 
+{
+	DeviceManager devMgr;
+	const unsigned int devCnt = devMgr.deviceCount();
+
+	// Cuenta la cantidad de dispositivos (cámaras) disponibles.
+	if (devCnt == 0)
+	{
+		cout << "No MATRIX VISION device found! Unable to continue!" << endl;
+		return 1;
+	}
+
+	map<shared_ptr<ThreadParameter>, shared_ptr<thread>> threads;
+
+	// Por cada cámara se inicia un dispositivo y se inicia un hilo con la función "runProgram" para cámara.
+	for (unsigned int i = 0; i < devCnt; i++)
+	{
+		shared_ptr<ThreadParameter> pParameter = make_shared<ThreadParameter>(devMgr[i], i);
+		//threads.emplace_back(make_shared<thread>(runProgram, pDevs.at(i), i));
+		threads[pParameter] = make_shared<thread>(runProgram, pParameter, i);
+		writeToStdout(devMgr[i]->family.read() + "(" + devMgr[i]->serial.read() + ")");
+	}
+
+	// now all threads will start running...
+	writeToStdout("Press [ENTER] to end the acquisition( the initialisation of the devices might take some time )");
+
+	if (getchar() == EOF)
+	{
+		writeToStdout("'getchar()' did return EOF...");
+	}
+
+	// stop all threads again
+	writeToStdout("Terminating live threads...");
+	s_boTerminated = true;
+
+	// Espera a que todos los hilos de los dispositivos terminen.
+	for (auto& t : threads) 
+	{
+		t.second->join();
+	}
+}
+
+//-----------------------------------------------------------------------------
+void displayCommandLineOptions(void)
+//-----------------------------------------------------------------------------
+{
+	cout << "Available parameters:" << endl
+		<< "  'product' or 'p' to specify a certain product type. All other products will be ignored then" << endl
+		<< "      a '*' serves as a wildcard." << endl
+		<< endl
+		<< "USAGE EXAMPLE:" << endl
+		<< "  ContinuousCaptureAllDevices p=mvBlue* " << endl << endl;
 }
 

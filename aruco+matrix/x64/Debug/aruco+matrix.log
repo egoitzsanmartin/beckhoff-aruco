@@ -1,8 +1,4 @@
-﻿  MatrixVisionDevice.cpp
-  Automatically linking with mvDeviceManager.lib
-  program.cpp
+﻿  program.cpp
   Automatically linking with mvDeviceManager.lib
 c:\users\administrator\source\repos\sample08\aruco+matrix\program.cpp(35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\administrator\source\repos\sample08\aruco+matrix\program.cpp(38): warning C4101: 'pDev': unreferenced local variable
-  Generating Code...
   aruco+matrix.vcxproj -> C:\Users\Administrator\source\repos\Sample08\x64\Debug\aruco+matrix.exe
