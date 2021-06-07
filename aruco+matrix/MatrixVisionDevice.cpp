@@ -27,11 +27,14 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
         cin.get();
     }
 
+	mvIMPACT::acquire::GenICam::DeviceControl dc(pDev);
     mvIMPACT::acquire::GenICam::AcquisitionControl ac(pDev);
 	mvIMPACT::acquire::GenICam::AnalogControl anc(pDev);
 	// "On" para activar el sistema de trigger. "Off" para captura continua.
+	dc.deviceLinkThroughputLimit.write(62500000);
     ac.triggerMode.writeS("On");
-	//ac.exposureTime.write(10000);
+	ac.exposureTime.write(10000);
+	writeToStdout(to_string(ac.exposureTime.read()));
 	anc.gain.write(0);
 
     return pDev;

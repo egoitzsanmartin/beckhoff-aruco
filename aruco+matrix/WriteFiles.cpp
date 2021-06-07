@@ -11,8 +11,8 @@ void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstre
     outfile.close();*/
     *allOutfile << tvecs[0] << ';' << tvecs[1] << ';' << tvecs[2] << ';' << rvecs[0] << ';' << rvecs[1] << ';' << rvecs[2] << std::endl;
 
-    imwrite((imgPath + "/img" + std::to_string(nImage) + imgExtension), outputImage);
-    nImage++;
+    //imwrite((imgPath + "/img" + std::to_string(nImage) + imgExtension), outputImage);
+    //nImage++;
 }
 
 void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile) {

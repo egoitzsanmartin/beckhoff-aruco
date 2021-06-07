@@ -10,17 +10,18 @@ using namespace cv;
 using namespace std;
 
 //void runProgram(shared_ptr<ThreadParameter> parameter, int n);
-void displayCommandLineOptions(void);
+void endProgram();
 
 static bool s_boTerminated = false;
 
 int waitTime = 1;													// 1 milisegundo.
 bool displayImage = true;											// Para activar o desactivar la reproducción de las imágenes.
-bool writeInFile = false;			 								// Para activar o desactivar la función de esctibir las poses en ficheros.
-bool saveImage = false;												// Para activar o desactivar el guardado de imagen en disco.
+bool writeInFile = true;			 								// Para activar o desactivar la función de esctibir las poses en ficheros.
+bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
 String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
+//String imgPath = "C:/Users/Administrator/Documents/callib/img";
 String imgExtension = ".bmp";										// Formato de imagen
 
 class ThreadParameter
@@ -41,6 +42,14 @@ public:
 	}
 };
 
+void endProgram() {
+	writeToStdout("Type any character to end the acquisition( the initialisation of the devices might take some time )");
+	int respuesta;
+	cin >> respuesta;
+	// stop all threads again
+	writeToStdout("Terminating live threads...");
+	s_boTerminated = true;
+}
 
 void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	Device* pDev = parameter->device();
@@ -55,7 +64,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	// Si es el primer hilo, abre un fichero para la pose del robot y comienza un hilo para gestionar la conexión de ADS.
 	if (n == 0) {
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-		//	adsThread = std::thread(startAdsConnection, &robotFile);
+		//adsThread = std::thread(startAdsConnection, &robotFile);
 	}
 
 	// Abre un archivo para las poses de los marcadores.
@@ -77,7 +86,6 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	}
 
 	manuallyStartAcquisitionIfNeeded(pDev, fi);
-
 	const Request* pRequest = nullptr;
 	const unsigned int timeout_ms = { 500 };
 	int requestNr = INVALID_ID;
@@ -101,6 +109,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 		requestNr = fi.imageRequestWaitFor(timeout_ms);
 		if (fi.isRequestNrValid(requestNr))
 		{
+			
 			pRequest = fi.getRequest(requestNr);
 			if (pRequest->isOK()) {
 				outputImage = getImage(pRequest);
@@ -127,7 +136,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 					cv::aruco::estimatePoseSingleMarkers(markerCorners, markerSize, cameraMatrix, distCoeffs, rvecs, tvecs);
 
 					// Pasa rvecs a Rodrigues
-				   // cv::Rodrigues(rvecs, m33);
+				    // cv::Rodrigues(rvecs, m33);
 					for (int i = 0; i < markerIds.size(); i++) {
 						// Dibuja los ejes del marcador en la imagen.
 
@@ -142,8 +151,8 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 
 						// Guarda las posiciones del robot y del marcador.
 						if (writeInFile) {
-							getRobotPose(&robotFile);
-							writeArucoPoseInFile(rvecs[i], tvecs[i], outputImage, &arucoFile, n, nImage++);
+							//getRobotPose(&robotFile);
+							writeArucoPoseInFile(rvecs[i], tvecs[i], outputImage, &arucoFile, n, nImage);
 						}
 					}
 
@@ -175,11 +184,12 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 
 					// Guarda la imagen en fichero.		
 					if (saveImage) {
-						string path = imgPath + std::to_string(n) + "/img" + std::to_string(nImage++) + imgExtension;
-						imwrite(path, rgbOutputImage);
+						std::string n_string = std::string(5 - std::to_string(nImage).length(), '0') + std::to_string(nImage++);
+						string path = imgPath + std::to_string(n) + "/img" + n_string + imgExtension;
+						imwrite(path, outputImage);
 					}
 
-					imshow(winname, rgbOutputImage);
+					imshow(winname, outputImage);
 
 					// Sin el waitTime no aparece la imagen en ventana.
 					char key = (char)cv::waitKey(waitTime);
@@ -207,7 +217,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	// Espera al hilo de ADS.
 	if (n == 0) 
 	{
-		adsThread.join();
+	//	adsThread.join();
 	}
 
 	// Cierra el archivo de texto
@@ -220,6 +230,8 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	}
 	// clear all queues
 	fi.imageRequestReset(0, 0);
+
+	writeToStdout("Device " + to_string(n) + " closed.");
 }
 
 
@@ -239,42 +251,42 @@ int main(int argc, char* argv[])
 	map<shared_ptr<ThreadParameter>, shared_ptr<thread>> threads;
 
 	// Por cada cámara se inicia un dispositivo y se inicia un hilo con la función "runProgram" para cámara.
-	for (unsigned int i = 0; i < devCnt; i++)
-	{
-		shared_ptr<ThreadParameter> pParameter = make_shared<ThreadParameter>(devMgr[i], i);
-		//threads.emplace_back(make_shared<thread>(runProgram, pDevs.at(i), i));
-		threads[pParameter] = make_shared<thread>(runProgram, pParameter, i);
-		writeToStdout(devMgr[i]->family.read() + "(" + devMgr[i]->serial.read() + ")");
+	cout << "Pulse [1] si quiere utilizar todas las cámaras" << endl;
+	cout << "Pulse [2] si quiere utilizar una sola cámara" << endl;
+
+	int respuesta;
+	cin >> respuesta;
+	if (respuesta == 1) {
+		for (unsigned int i = 0; i < devCnt; i++)
+		{
+			shared_ptr<ThreadParameter> pParameter = make_shared<ThreadParameter>(devMgr[i], i);
+			threads[pParameter] = make_shared<thread>(runProgram, pParameter, i);
+			writeToStdout(devMgr[i]->family.read() + "(" + devMgr[i]->serial.read() + ")");
+		}
+		thread stop(endProgram);
+		for (auto& t : threads) {
+			if (t.second->joinable()) 
+			{
+				t.second->join();
+			}
+		}
+		stop.join();
+	}
+	else if (respuesta == 2) {
+		Device* pDev = getDeviceFromUserInput(devMgr);
+		shared_ptr<ThreadParameter> pParameter = make_shared<ThreadParameter>(pDev, 0);
+		threads[pParameter] = make_shared<thread>(runProgram, pParameter, 0);
+		writeToStdout(pDev->family.read() + "(" + pDev->serial.read() + ")");
+
+		thread stop(endProgram);
+		for (auto& t : threads) {
+			if (t.second->joinable()) 
+			{
+				t.second->join();
+			}
+		}
+		stop.join();
 	}
 
-	// now all threads will start running...
-	writeToStdout("Press [ENTER] to end the acquisition( the initialisation of the devices might take some time )");
-
-	if (getchar() == EOF)
-	{
-		writeToStdout("'getchar()' did return EOF...");
-	}
-
-	// stop all threads again
-	writeToStdout("Terminating live threads...");
-	s_boTerminated = true;
-
-	// Espera a que todos los hilos de los dispositivos terminen.
-	for (auto& t : threads) 
-	{
-		t.second->join();
-	}
-}
-
-//-----------------------------------------------------------------------------
-void displayCommandLineOptions(void)
-//-----------------------------------------------------------------------------
-{
-	cout << "Available parameters:" << endl
-		<< "  'product' or 'p' to specify a certain product type. All other products will be ignored then" << endl
-		<< "      a '*' serves as a wildcard." << endl
-		<< endl
-		<< "USAGE EXAMPLE:" << endl
-		<< "  ContinuousCaptureAllDevices p=mvBlue* " << endl << endl;
 }
 

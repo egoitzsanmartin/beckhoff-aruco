@@ -26,14 +26,9 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[TOGGEL := NOT TOGGEL;
-TP_1( IN := TOGGEL, PT := T#100ms);
-IF (TP_1.Q = 0) THEN
-	ROBOTVar := ROBOTVar + 1;
-END_IF]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="26" Count="3" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

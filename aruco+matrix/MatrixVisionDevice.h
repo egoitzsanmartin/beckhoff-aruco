@@ -8,6 +8,7 @@
 #include <opencv2/highgui.hpp>
 #include <vector>
 #include <chrono>
+#include <iostream>
 
 mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev);
 cv::Mat getImage(const Request* pRequest);
