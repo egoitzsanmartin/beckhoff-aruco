@@ -20,8 +20,8 @@ bool writeInFile = true;			 								// Para activar o desactivar la función de e
 bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
-String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
-//String imgPath = "C:/Users/Administrator/Documents/callib/img";
+//String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
+String imgPath = "C:/Users/Administrator/Documents/callib/img";
 String imgExtension = ".bmp";										// Formato de imagen
 
 class ThreadParameter
