@@ -75,3 +75,23 @@ void getValuesFromXML(char buf[], char destBuf[], size_t size) {
 		}
 	}
 }
+
+void createDirectory(std::string path) {
+	size_t pos_it = 0;
+	size_t pos = 0;
+	std::string delimiter = "/";
+	std::string token;
+	const char* dir;
+	std::string iterator = path;
+
+	while ((pos_it = iterator.find(delimiter)) != std::string::npos) {
+		pos += pos_it + 1;
+		token = path.substr(0, pos);
+		if (GetFileAttributesA(token.c_str()) == INVALID_FILE_ATTRIBUTES) {
+			dir = token.c_str();
+			_mkdir(dir);
+		}
+		iterator.erase(0, pos_it + delimiter.length());
+	}
+
+}

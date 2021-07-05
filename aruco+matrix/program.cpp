@@ -20,9 +20,9 @@ bool writeInFile = true;			 								// Para activar o desactivar la función de e
 bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
-//String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
-String imgPath = "C:/Users/Administrator/Documents/callib/img";
-String imgExtension = ".bmp";										// Formato de imagen
+String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
+//String imgPath = "C:/Users/Administrator/Documents/callib/img";
+String imgExtension = ".bmp";										// Formato de 
 
 class ThreadParameter
 	//-----------------------------------------------------------------------------
@@ -63,6 +63,8 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 
 	// Si es el primer hilo, abre un fichero para la pose del robot y comienza un hilo para gestionar la conexión de ADS.
 	if (n == 0) {
+		string path = "C:/Users/Administrator/Documents/aruco/poses/robotPose.txt";
+		if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
 		//adsThread = std::thread(startAdsConnection, &robotFile);
 	}
@@ -71,6 +73,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	String path = "C:/Users/Administrator/Documents/aruco/poses/arucoPose";
 	path += std::to_string(n);
 	path += ".txt";
+	if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
 	arucoFile.open(path);
 
 	Statistics statistics(pDev);
@@ -131,8 +134,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 					std::vector<cv::Vec3d> rvecs, tvecs;
 					Mat m33(3, 3, CV_64F);
 
-					// Esta función estima las posiciones de los marcadores
-					// y los guarda en rvecs y tvecs.
+					// Esta función estima las posiciones de los marcadores y los guarda en rvecs y tvecs.
 					cv::aruco::estimatePoseSingleMarkers(markerCorners, markerSize, cameraMatrix, distCoeffs, rvecs, tvecs);
 
 					// Pasa rvecs a Rodrigues
@@ -186,6 +188,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 					if (saveImage) {
 						std::string n_string = std::string(5 - std::to_string(nImage).length(), '0') + std::to_string(nImage++);
 						string path = imgPath + std::to_string(n) + "/img" + n_string + imgExtension;
+						if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
 						imwrite(path, outputImage);
 					}
 
