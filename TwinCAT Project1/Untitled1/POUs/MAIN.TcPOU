@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
-  <POU Name="MAIN" Id="{de984950-ce27-47ab-b55e-f3c86f2b17b5}" SpecialFunc="None">
+  <POU Name="MAIN" Id="{5b1611da-9a64-4e17-938b-8f9045a51963}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	PLCVar AT %MD0 : DWORD;
+	PCVar AT %MD1 : DWORD;
 	TP_1		: TP;
 	TOGGEL: BOOL;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TOGGEL := NOT TOGGEL;
 TP_1( IN := TOGGEL, PT := T#4S);

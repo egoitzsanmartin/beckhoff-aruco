@@ -1,5 +1,7 @@
 #include "Parameters.h"
 
+// Abre el fichero "filename" y guarda los parametros.
+
 bool readDetectorParameters(string filename, Ptr<cv::aruco::DetectorParameters>& params) {
     FileStorage fs(filename, FileStorage::READ);
     if (!fs.isOpened())

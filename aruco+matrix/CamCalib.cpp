@@ -1,5 +1,6 @@
 #include "CamCalib.h"
 
+// Parametros intrínsecos de la cámara.
 
 void camCalib(cv::Mat *cameraMatrix, cv::Mat *distCoeffs) {
 

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <POU Name="MAIN" Id="{43968a78-caf7-44cf-a620-5ef2552be001}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	ROBOTVar AT %MD0 : DWORD;
+	PCVar AT %MD1 : DWORD;
+	TP_1		: TP;
+	TOGGEL: BOOL;
+	Var1 AT %I*: BOOL;
+	Var2 AT %I*: BOOL;
+	Var3 AT %I*: BOOL;
+	Var4 AT %I*: BOOL;
+	Var5 AT %I*: BOOL;
+	Var6 AT %I*: BOOL;
+	Var7 AT %I*: BOOL;
+	Var8 AT %I*: BOOL;
+	Var9 AT %Q*: BOOL;
+	Var10 AT %Q*: BOOL;
+	Var11 AT %Q*: BOOL;
+	Var12 AT %Q*: BOOL;
+	Var13 AT %Q*: BOOL;
+	Var14 AT %Q*: BOOL;
+	Var15 AT %Q*: BOOL;
+	Var16 AT %Q*: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

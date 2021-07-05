@@ -12,4 +12,4 @@ using namespace tinyxml2;
 
 void writeArucoPoseInFile(cv::Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstream* allOutfile, int n, int nImage);
 void getValuesFromXML(char buf[], char destBuf[], size_t size);
-void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile);
+void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile);

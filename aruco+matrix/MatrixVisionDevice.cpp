@@ -1,8 +1,6 @@
 #include "MatrixVisionDevice.h"
 
-using namespace mvIMPACT::acquire;
-using namespace std;
-using namespace cv;
+using namespace cv; // IMPORTANTE: no definir namespace en el .h, da un error de "'ACCESS_MASK' : ambiguous symbol" 
 
 //-----------------------------------------------------------------------------
 mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
@@ -14,10 +12,11 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
     }
     try
     {
-        cout << "Initialising the device. This might take some time..." << endl << endl;
-        pDev->interfaceLayout.write(dilGenICam); // This is also done 'silently' by the 'getDeviceFromUserInput' function but your application needs to do this as well so state this here clearly!
+		writeToStdout("Initialising the device. This might take some time...");
+		conditionalSetProperty(pDev->interfaceLayout, dilGenICam); // This is also done 'silently' by the 'getDeviceFromUserInput' function but your application needs to do this as well so state this here clearly!
+		conditionalSetProperty(pDev->acquisitionStartStopBehaviour, assbUser);
         pDev->open();
-        cout << "Device open" << endl << endl;
+		writeToStdout("Device open");
     }
     catch (const ImpactAcquireException& e)
     {
@@ -28,14 +27,21 @@ mvIMPACT::acquire::Device* initializeDevice(mvIMPACT::acquire::Device* pDev) {
         cin.get();
     }
 
+	mvIMPACT::acquire::GenICam::DeviceControl dc(pDev);
     mvIMPACT::acquire::GenICam::AcquisitionControl ac(pDev);
-    ac.triggerMode.writeS("Off");
+	mvIMPACT::acquire::GenICam::AnalogControl anc(pDev);
+	// "On" para activar el sistema de trigger. "Off" para captura continua.
+	dc.deviceLinkThroughputLimit.write(62500000);
+    ac.triggerMode.writeS("On");
+	ac.exposureTime.write(10000);
+	writeToStdout(to_string(ac.exposureTime.read()));
+	anc.gain.write(0);
 
     return pDev;
 }
 
 
-cv::Mat getImage(std::shared_ptr<Request> pRequest) {
+cv::Mat getImage(const Request* pRequest) {
     cv::Mat image;
     int dataType = getDataType(pRequest->imagePixelFormat.read());
     image = Mat(cv::Size(pRequest->imageWidth.read(), pRequest->imageHeight.read()), dataType, pRequest->imageData.read(), pRequest->imageLinePitch.read());
@@ -87,4 +93,9 @@ int getDataType(mvIMPACT::acquire::TImageBufferPixelFormat format) {
 		break;
 	}
 	return dataType;
+}
+
+void writeToStdout(const std::string& msg) {
+	lock_guard<mutex> lockedScope(s_mutex);
+	cout << msg << endl;
 }

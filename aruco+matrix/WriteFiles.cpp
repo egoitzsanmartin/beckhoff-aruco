@@ -1,11 +1,9 @@
 #include "WriteFiles.h"
 
 
-
-
 void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstream* allOutfile, int n, int nImage) {
 	String imgPath = "C:/Users/Administrator/Documents/aruco/img";
-	String imgExtension = ".jpg";
+	String imgExtension = ".bmp";
 	imgPath += std::to_string(n);
    /* std::ofstream outfile;
     outfile.open(posePath + std::to_string(nImage) + poseExtension);
@@ -13,26 +11,14 @@ void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstre
     outfile.close();*/
     *allOutfile << tvecs[0] << ';' << tvecs[1] << ';' << tvecs[2] << ';' << rvecs[0] << ';' << rvecs[1] << ';' << rvecs[2] << std::endl;
 
-    imwrite((imgPath + "/img" + std::to_string(nImage) + imgExtension), outputImage);
-    nImage++;
+    //imwrite((imgPath + "/img" + std::to_string(nImage) + imgExtension), outputImage);
+    //nImage++;
 }
 
-void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile) {
-	
-	/*static const char* xml = 
-		"<?xml version=\"1.0\"?>"
-		"<Rob Type=\"KUKA\">"
-			"<X>615.0</X>"
-			"<Y>140.0</Y>"
-			"<Z>420.0</Z>"
-			"<A>-180.0</A>"
-			"<B>0.0</B>"
-			"<C>-90.0</C>"
-			"<IPOC>361233514</IPOC>"
-		"</Rob>";*/
+void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile) {
 
-	/*std::string result = buf;
-	XMLDocument doc;
+	std::string result = buf;
+	tinyxml2::XMLDocument doc;
 	doc.Parse(buf);
 
 	const char* X = doc.FirstChildElement("Rob")->FirstChildElement("X")->GetText();
@@ -60,7 +46,7 @@ void writeRobotPoseInFile(ULONG buf, std::ofstream* allOutfile) {
 	result.append(B);
 	result.append(";");
 	result.append(C);
-	result.append(";");*/
+	result.append(";");
 
 	*allOutfile << buf << std::endl;
 
