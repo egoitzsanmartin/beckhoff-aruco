@@ -22,7 +22,8 @@ bool noArUco = false;												// Activar si se quiere capturar imagen sin det
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
 String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
 //String imgPath = "C:/Users/Administrator/Documents/callib/img";
-String imgExtension = ".bmp";										// Formato de 
+String imgExtension = ".bmp";										// Formato de imagen
+std::condition_variable cVar;
 
 class ThreadParameter
 	//-----------------------------------------------------------------------------
@@ -55,10 +56,11 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	Device* pDev = parameter->device();
 	ofstream robotFile;
 	ofstream arucoFile;
+	std::mutex m;
 	std::thread adsThread;
 
 	initializeDevice(pDev);
-
+	std::unique_lock<std::mutex> lk(m);
 	int nImage = 0;
 
 	// Si es el primer hilo, abre un fichero para la pose del robot y comienza un hilo para gestionar la conexión de ADS.
@@ -66,9 +68,8 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 		string path = "C:/Users/Administrator/Documents/aruco/poses/robotPose.txt";
 		if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
 		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-		//adsThread = std::thread(startAdsConnection, &robotFile);
+		adsThread = std::thread(mainADS, &cVar, &s_boTerminated);
 	}
-
 	// Abre un archivo para las poses de los marcadores.
 	String path = "C:/Users/Administrator/Documents/aruco/poses/arucoPose";
 	path += std::to_string(n);
@@ -104,6 +105,7 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_ARUCO_ORIGINAL);
 
 	cv::Mat outputImage, rgbOutputImage, cameraMatrix, distCoeffs;
+	cVar.wait(lk);
 	while (!s_boTerminated) {
 		// Comienza a contar el tiempo.
 		auto start = std::chrono::high_resolution_clock::now();
@@ -217,14 +219,13 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	}
 	//arucoFile.close();
 
-	// Espera al hilo de ADS.
+	// Espera al hilo de ADS y cierra el archivo de texto
 	if (n == 0) 
 	{
-	//	adsThread.join();
+		adsThread.join();
+		robotFile.close();
 	}
 
-	// Cierra el archivo de texto
-	robotFile.close();
 	manuallyStopAcquisitionIfNeeded(pDev, fi);
 
 	if (fi.isRequestNrValid(requestNr))

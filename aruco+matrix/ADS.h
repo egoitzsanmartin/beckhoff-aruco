@@ -4,13 +4,11 @@
 #include <winbase.h>
 #include <thread>
 #include <list>
+#include <mutex>
 #include "TcAdsDef.h"
 #include "TcAdsApi.h"
 
 
 
-void startAdsConnection(std::ofstream* allOutfile);
-void _stdcall Callback(AmsAddr*, AdsNotificationHeader*, unsigned long);
-long fifoWrite(long val);
-long fifoRead();
-void writeValuesInPlc(long hWrite, AmsAddr* pAddr);
+void mainADS(std::condition_variable* condVar, bool* end);
+void __stdcall Callback(AmsAddr* pAddr, AdsNotificationHeader* pNotification, ULONG hA);
