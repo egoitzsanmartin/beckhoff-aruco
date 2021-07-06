@@ -1,7 +1,3 @@
 ﻿  MatrixVisionDevice.cpp
   Automatically linking with mvDeviceManager.lib
-  WriteFiles.cpp
-  program.cpp
-  Automatically linking with mvDeviceManager.lib
-  Generating Code...
   aruco+matrix.vcxproj -> C:\Users\Administrator\source\repos\Sample08\x64\Debug\aruco+matrix.exe
