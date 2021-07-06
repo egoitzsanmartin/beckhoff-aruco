@@ -1,5 +1,8 @@
 # ArUco detector
-Este programa implementa distintas funcionalidades con el objetivo de crear un programa que sea capaz de capturar la pose de un robot utilizando marcadores ArUco.
+Este programa implementa distintas funcionalidades con el objetivo de crear un programa que sea capaz de capturar la pose de un robot utilizando marcadores ArUco. 
+
+#### IMPORTANTE!!!!
+No contiene ninguna funcionalidad de ADS, por lo que **no hay conexión con el robot**. Este programa está pensado para utilizarlo sin la necesidad de un ordenador Beckhoff o las librerías de TwinCAT.
 
 ### Captura de imagen multi-cámara con Matrix Vision
 
@@ -8,10 +11,6 @@ Utiliza funciones de las librerías de **Matrix Vision** y **OpenCV** para **cap
 ### Detección de marcadores Aruco
 
 Utilizando funciones de **OpenCV** el programa es capaz de **detectar marcadores ArUco** a partir de las imágenes capturadas por las cámaras de Matrix Vision. Además, si los parametros de calibración de cámara han sido introducidos, el programa es capaz de estimar el **cambio de posición y rotación** de estos marcadores, guardándolos en una carpeta de nombre "poses" y dentro en un fichero de texto con distinto nombre dependiendo de la id de la cámara.
-  
-### Comunicación con PLC de Beckhoff mediante ADS
-
-Posee funciones de las librerías de TwinCAT ADS para la comunicación con el PLC de un ordenador Beckhoff.
   
 ### Comunicación con robot mediante UDP
 
