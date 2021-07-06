@@ -1,6 +1,5 @@
 #include "WriteFiles.h"
 
-
 void writeArucoPoseInFile(Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::ofstream* allOutfile, int n, int nImage) {
 	String imgPath = "C:/Users/Administrator/Documents/aruco/img";
 	String imgExtension = ".bmp";

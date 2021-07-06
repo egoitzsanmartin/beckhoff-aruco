@@ -1,3 +1,16 @@
-﻿  MatrixVisionDevice.cpp
+﻿  apriltag_quad_thresh.cpp
+  aruco.cpp
+  charuco.cpp
+  dictionary.cpp
+  zmaxheap.cpp
+  CamCalib.cpp
+  MatrixVisionDevice.cpp
   Automatically linking with mvDeviceManager.lib
-  aruco+matrix.vcxproj -> C:\Users\Administrator\source\repos\Sample08\x64\Debug\aruco+matrix.exe
+  Parameters.cpp
+  program.cpp
+  Automatically linking with mvDeviceManager.lib
+  tinyxml2.cpp
+  UDP_Server.cpp
+  WriteFiles.cpp
+  Generando código...
+  aruco+matrix.vcxproj -> D:\robotica\proyectos\beckhoff-aruco\x64\Debug\aruco+matrix.exe

@@ -15,21 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\apriltag_quad_thresh.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\aruco.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\charuco.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\dictionary.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\zmaxheap.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="CamCalib.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
@@ -51,8 +36,20 @@
     <ClCompile Include="tinyxml2.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
-    <ClCompile Include="ADS.cpp">
-      <Filter>Archivos de recursos</Filter>
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\dictionary.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\zmaxheap.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\apriltag_quad_thresh.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\aruco.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\charuco.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +69,6 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ADS.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="exampleHelper.h">

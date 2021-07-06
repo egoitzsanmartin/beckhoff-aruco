@@ -4,10 +4,10 @@
 #include <opencv2/imgcodecs.hpp>
 #include <iostream>
 #include <direct.h>
+#include <windows.h>
 #include <fstream>
 #include <string>
 #include "tinyxml2.h"
-#include "ADS.h"
 
 using namespace cv;
 using namespace tinyxml2;

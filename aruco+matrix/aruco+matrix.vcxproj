@@ -19,12 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\apriltag_quad_thresh.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\aruco.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\charuco.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\dictionary.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\opencv_contrib-master\modules\aruco\src\zmaxheap.cpp" />
-    <ClCompile Include="ADS.cpp" />
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\apriltag_quad_thresh.cpp" />
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\aruco.cpp" />
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\charuco.cpp" />
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\dictionary.cpp" />
+    <ClCompile Include="C:\opencv_contrib-master\modules\aruco\src\zmaxheap.cpp" />
     <ClCompile Include="CamCalib.cpp" />
     <ClCompile Include="MatrixVisionDevice.cpp" />
     <ClCompile Include="Parameters.cpp" />
@@ -34,7 +33,6 @@
     <ClCompile Include="WriteFiles.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ADS.h" />
     <ClInclude Include="CamCalib.h" />
     <ClInclude Include="exampleHelper.h" />
     <ClInclude Include="MatrixVisionDevice.h" />
@@ -145,13 +143,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\TwinCAT\AdsApi\TcAdsDll\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\opencv\build\x64\vc15\lib;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\lib\win\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\TwinCAT\AdsApi\TcAdsDll\x64\lib\TcAdsDll.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,7 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\TwinCAT\AdsApi\TcAdsDll\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvIMPACT_CPP;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\mvDeviceManager\Include;C:\Program Files\MATRIX VISION\mvIMPACT Acquire;C:\opencv_contrib-master\modules\aruco\include;C:\opencv\build\include;$(MVIMPACT_ACQUIRE_DIR)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
@@ -171,7 +169,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\opencv\build\x64\vc15\lib;C:\Program Files\MATRIX VISION\mvIMPACT Acquire\lib\win\x64;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;C:\TwinCAT\AdsApi\TcAdsDll\x64\lib\TcAdsDll.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;mvDeviceManager.lib;mvDisplay.lib;ddraw.lib;opencv_world440.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <PreventDllBinding>
       </PreventDllBinding>
     </Link>

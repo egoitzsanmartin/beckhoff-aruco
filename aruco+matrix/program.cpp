@@ -3,7 +3,6 @@
 #include "UDP_Server.h"
 #include "Parameters.h"
 #include "WriteFiles.h"
-#include "ADS.h"
 #include "exampleHelper.h"
 
 using namespace cv;
@@ -20,7 +19,7 @@ bool writeInFile = true;			 								// Para activar o desactivar la función de e
 bool saveImage = true;												// Para activar o desactivar el guardado de imagen en disco.
 bool noArUco = false;												// Activar si se quiere capturar imagen sin detectar ArUcos.
 float markerSize = 50;												// Tamaño en milímetros del marcador ArUco.
-String imgPath = "C:/Users/Administrator/Documents/aruco/img";		// Dirección de guardado de imagen
+String imgPath = "C:/aruco/img";		// Dirección de guardado de imagen
 //String imgPath = "C:/Users/Administrator/Documents/callib/img";
 String imgExtension = ".bmp";										// Formato de 
 
@@ -55,22 +54,20 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	Device* pDev = parameter->device();
 	ofstream robotFile;
 	ofstream arucoFile;
-	std::thread adsThread;
 
 	initializeDevice(pDev);
 
 	int nImage = 0;
 
-	// Si es el primer hilo, abre un fichero para la pose del robot y comienza un hilo para gestionar la conexión de ADS.
+	// Si es el primer hilo, abre un fichero para la pose del robot
 	if (n == 0) {
-		string path = "C:/Users/Administrator/Documents/aruco/poses/robotPose.txt";
+		string path = "C:/aruco/poses/robotPose.txt";
 		if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
-		robotFile.open("C:/Users/Administrator/Documents/aruco/poses/robotPose.txt");
-		//adsThread = std::thread(startAdsConnection, &robotFile);
+		robotFile.open("C:/aruco/poses/robotPose.txt");
 	}
 
 	// Abre un archivo para las poses de los marcadores.
-	String path = "C:/Users/Administrator/Documents/aruco/poses/arucoPose";
+	String path = "C:/aruco/poses/arucoPose";
 	path += std::to_string(n);
 	path += ".txt";
 	if (GetFileAttributesA(path.c_str()) == INVALID_FILE_ATTRIBUTES) createDirectory(path);
@@ -217,14 +214,12 @@ void runProgram(shared_ptr<ThreadParameter> parameter, int n) {
 	}
 	//arucoFile.close();
 
-	// Espera al hilo de ADS.
+	// Cierra el archivo de texto
 	if (n == 0) 
 	{
-	//	adsThread.join();
+		robotFile.close();
 	}
-
-	// Cierra el archivo de texto
-	robotFile.close();
+	
 	manuallyStopAcquisitionIfNeeded(pDev, fi);
 
 	if (fi.isRequestNrValid(requestNr))
