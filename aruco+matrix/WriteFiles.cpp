@@ -95,3 +95,30 @@ void createDirectory(std::string path) {
 	}
 
 }
+
+std::string getTimestamp() {
+	auto t = time(nullptr);
+	auto tm = *localtime(&t);
+
+	char mes[2];
+	char dia[2];
+	char h[2];
+	char m[2];
+	char s[2];
+
+	sprintf_s(mes, 10, "%02d", tm.tm_mon + 1);
+	sprintf_s(dia, 10, "%02d", tm.tm_mday);
+	sprintf_s(h, 10, "%02d", tm.tm_hour);
+	sprintf_s(m, 10, "%02d", tm.tm_min);
+	sprintf_s(s, 10, "%02d", tm.tm_sec);
+
+	std::string mesString = mes;
+	std::string diaString = dia;
+	std::string hString = h;
+	std::string mString = m;
+	std::string sString = s;
+
+	std::string now_string = std::to_string(tm.tm_year + 1900) + "." + mesString + "." + diaString + "-" + hString + "." + mString + "." + sString;
+
+	return now_string;
+}

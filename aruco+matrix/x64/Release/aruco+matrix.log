@@ -1,8 +1,8 @@
 ﻿  program.cpp
   Automatically linking with mvDeviceManager.lib
   Generating code
-  4 of 3909 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 3917 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   aruco+matrix.vcxproj -> C:\Users\Administrator\source\repos\Sample08\x64\Release\aruco+matrix.exe
