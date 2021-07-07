@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <string>
 #include <opencv2/aruco.hpp>
 #include <opencv2/core.hpp>
@@ -16,3 +17,4 @@ void writeArucoPoseInFile(cv::Vec3d rvecs, Vec3d tvecs, Mat outputImage, std::of
 void getValuesFromXML(char buf[], char destBuf[], size_t size);
 void writeRobotPoseInFile(char* buf, std::ofstream* allOutfile);
 void createDirectory(std::string path);
+std::string getTimestamp();

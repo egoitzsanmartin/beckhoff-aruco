@@ -1,19 +1,7 @@
-﻿  apriltag_quad_thresh.cpp
-  aruco.cpp
-  charuco.cpp
-  dictionary.cpp
-  zmaxheap.cpp
-  CamCalib.cpp
-  MatrixVisionDevice.cpp
+﻿  program.cpp
   Automatically linking with mvDeviceManager.lib
-  Parameters.cpp
-  program.cpp
-  Automatically linking with mvDeviceManager.lib
-  tinyxml2.cpp
-  UDP_Server.cpp
-  WriteFiles.cpp
   Generando código
-  0 of 3832 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 3842 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
